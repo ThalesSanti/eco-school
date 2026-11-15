@@ -32,3 +32,9 @@ export const NAV: Record<Role, { to: AppPath; label: string; icon: string }[]> =
 export const HOME_FOR: Record<Role, AppPath> = {
   aluno: "/app/missoes", professor: "/app/validacao", gestor: "/app/painel", regional: "/app/ranking", admin: "/app/auditoria",
 };
+
+/** Guarda de acesso por perfil: uma URL só é permitida se pertencer à navegação do perfil. */
+export function canAccess(role: Role | null, pathname: string): boolean {
+  if (!role) return false;
+  return NAV[role].some((i) => pathname === i.to || pathname.startsWith(`${i.to}/`));
+}

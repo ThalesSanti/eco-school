@@ -3,6 +3,8 @@ import { ROLE_INFO, useEco, type Role } from "@/lib/eco-store";
 import { Icon } from "@/components/eco/ui";
 import { LogoFull } from "@/components/eco/logo";
 import { HOME_FOR } from "@/components/eco/nav";
+import { LoginForm } from "@/components/eco/login-form";
+import { PUBLIC_ROLES } from "@/lib/demo-auth";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -14,6 +16,9 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Missões sustentáveis, pontos, ranking e indicadores para alunos, professores e gestores." },
       { property: "og:image", content: "/eco-school-logo.png" },
     ],
+  }),
+  validateSearch: (s: Record<string, unknown>): { perfil?: Role | undefined } => ({
+    perfil: typeof s.perfil === "string" && s.perfil in ROLE_INFO ? (s.perfil as Role) : undefined,
   }),
   component: Index,
 });
@@ -33,12 +38,12 @@ const STEPS = [
 ];
 
 function Index() {
-  const { setRole } = useEco();
+  const { state, ready, logout } = useEco();
   const nav = useNavigate();
-  const enter = (r: Role) => {
-    setRole(r);
-    nav({ to: HOME_FOR[r] });
-  };
+  const { perfil } = Route.useSearch();
+  const choose = (r: Role) => nav({ to: "/", search: { perfil: r } });
+
+  if (perfil) return <LoginForm role={perfil} onBack={() => nav({ to: "/", search: {} })} />;
 
   return (
     <main className="hero-glow min-h-screen px-4 pb-12 pt-8 sm:px-6 md:py-14">
@@ -72,19 +77,26 @@ function Index() {
 
         {/* Seleção de perfil */}
         <section aria-labelledby="perfis" className="min-w-0">
-          <h2 id="perfis" className="text-xl font-bold sm:text-2xl">Escolha um perfil para começar</h2>
+          <h2 id="perfis" className="text-xl font-bold sm:text-2xl">Escolha seu perfil para entrar</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Versão de demonstração: os perfis abaixo usam dados fictícios e não exigem senha.
+            Ambiente de demonstração com dados fictícios. Na próxima tela você informa usuário e senha.
           </p>
+          {ready && state.role && (
+            <div className="m3-card-hi mt-4 flex flex-wrap items-center gap-3 !p-3 text-sm" role="status">
+              <Icon name="account_circle" className="text-primary" />
+              <span className="min-w-0 flex-1">Você já está conectado como <strong>{ROLE_INFO[state.role].person}</strong>.</span>
+              <button className="m3-chip" onClick={() => nav({ to: HOME_FOR[state.role!] })}>Continuar</button>
+              <button className="m3-chip" onClick={() => logout()}>Sair</button>
+            </div>
+          )}
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            {(Object.keys(ROLE_INFO) as Role[]).map((r, i) => (
+            {PUBLIC_ROLES.map((r, i) => (
               <button
                 key={r}
-                onClick={() => enter(r)}
+                onClick={() => choose(r)}
                 style={{ animationDelay: `${i * 50}ms` }}
                 className={cn(
                   "m3-card group flex min-h-24 items-center gap-4 text-left focus-visible:outline-2 focus-visible:outline-ring animate-rise",
-                  r === "admin" && "sm:col-span-2",
                 )}
               >
                 <div className={cn("grid size-12 shrink-0 place-items-center rounded-2xl transition group-hover:scale-105", TONES[r])}>
@@ -99,9 +111,14 @@ function Index() {
               </button>
             ))}
           </div>
-          <p className="mt-6 flex items-start gap-2 text-xs text-muted-foreground">
-            <Icon name="shield" className="!text-base" />
-            <span>Login real com senha e controle de acesso ficam para o próximo sprint.</span>
+          <p className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
+            <span className="flex items-start gap-2">
+              <Icon name="shield" className="!text-base" />
+              <span>Login simulado para demonstração; autenticação real fica para uma próxima etapa.</span>
+            </span>
+            <button onClick={() => choose("admin")} className="inline-flex min-h-9 items-center gap-1 rounded-full px-2 font-semibold underline-offset-2 hover:underline">
+              <Icon name="admin_panel_settings" className="!text-base" />Acesso da equipe
+            </button>
           </p>
         </section>
       </div>

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { ROLE_INFO, useEco } from "@/lib/eco-store";
 import { Icon } from "@/components/eco/ui";
 import { LogoMark } from "@/components/eco/logo";
-import { NAV } from "@/components/eco/nav";
+import { canAccess, HOME_FOR, NAV } from "@/components/eco/nav";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/app")({
@@ -11,16 +11,18 @@ export const Route = createFileRoute("/app")({
 });
 
 function AppLayout() {
-  const { state, ready, setRole, reset } = useEco();
+  const { state, ready, logout, reset } = useEco();
   const nav = useNavigate();
   const { pathname } = useLocation();
 
+  const allowed = canAccess(state.role, pathname);
   useEffect(() => { if (ready && !state.role) nav({ to: "/" }); }, [ready, state.role, nav]);
+  // URL de outro perfil (digitada à mão): volta para a página inicial do perfil conectado.
+  useEffect(() => { if (ready && state.role && !allowed) nav({ to: HOME_FOR[state.role], replace: true }); }, [ready, state.role, allowed, nav]);
   if (!ready || !state.role) return <div className="min-h-screen bg-background" />;
 
   const items = NAV[state.role];
   const info = ROLE_INFO[state.role];
-  const allowed = items.some((i) => pathname.startsWith(i.to));
 
   return (
     <div className="min-h-screen bg-background md:pl-24">
@@ -42,14 +44,14 @@ function AppLayout() {
         <Link to="/" aria-label="Eco School — início" className="shrink-0 md:hidden"><LogoMark size={40} /></Link>
         <div className="min-w-0 flex-1">
           <div className="truncate text-xs text-muted-foreground">{info.label} · {state.period}</div>
-          <div className="truncate font-display font-semibold text-foreground">{info.person}</div>
+          <div className="truncate font-display font-semibold text-foreground">{info.person}{state.username ? <span className="ml-2 hidden text-xs font-normal text-muted-foreground sm:inline">@{state.username}</span> : null}</div>
         </div>
         <div className="flex shrink-0 items-center gap-1">
         <Button variant="ghost" onClick={() => { reset(); }} aria-label="Restaurar dados de demonstração" title="Restaurar dados de demonstração" className="size-12 shrink-0 rounded-full p-0 text-muted-foreground">
           <Icon name="restart_alt" />
         </Button>
-        <Button variant="outline" onClick={() => { setRole(null); nav({ to: "/" }); }} aria-label="Trocar perfil" title="Trocar perfil" className="size-12 shrink-0 rounded-full p-0 sm:w-auto sm:px-4">
-          <Icon name="switch_account" className="!text-lg" /><span className="hidden sm:inline">Trocar perfil</span>
+        <Button variant="outline" onClick={() => { logout(); nav({ to: "/" }); }} aria-label="Sair da conta" title="Sair da conta" className="size-12 shrink-0 rounded-full p-0 sm:w-auto sm:px-4">
+          <Icon name="logout" className="!text-lg" /><span className="hidden sm:inline">Sair</span>
         </Button>
         </div>
       </header>

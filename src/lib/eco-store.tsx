@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { type BonusRule, isWithinWindow } from "./scoring";
 import { computeStudentStats } from "./ranking";
+import type { DemoAccount } from "./demo-auth";
 import { demoStudents, demoSubmissions, mergeDemoData } from "./demo-data";
 
 export type Role = "aluno" | "professor" | "gestor" | "regional" | "admin";
@@ -30,6 +31,8 @@ export interface Seal { schoolId: string; level: string; criterion: string; at: 
 
 export interface EcoState {
   role: Role | null;
+  /** usuário da sessão demonstrativa (null = sessão antiga ou desconectado) */
+  username: string | null;
   currentStudentId: string;
   period: string;
   cycleClosed: boolean;
@@ -114,7 +117,7 @@ function seed(): EcoState {
   ];
   const now = new Date().toISOString();
   return {
-    role: null, currentStudentId: "st1", period: "2026-T4", cycleClosed: false,
+    role: null, username: null, currentStudentId: "st1", period: "2026-T4", cycleClosed: false,
     attendance: { enabled: true, bonus: 20, minDays: 3 },
     missions, students, submissions, schools,
     rules: [
@@ -136,6 +139,11 @@ interface Ctx {
   state: EcoState;
   ready: boolean;
   setRole: (r: Role | null) => void;
+  /** Inicia a sessão demonstrativa de uma conta já validada (ver demo-auth.ts). */
+  login: (account: DemoAccount) => void;
+  /** Registra tentativa recusada na auditoria (sem senha). */
+  logFailedLogin: (username: string, roleLabel: string) => void;
+  logout: () => void;
   actor: string;
   submitMission: (missionId: string, note: string, photo?: string, quizAnswer?: number) => { ok: boolean; message: string };
   decide: (subId: string, approve: boolean, reason?: string) => void;
@@ -155,7 +163,7 @@ export function EcoProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setState(withDemoData(JSON.parse(raw) as EcoState));
+      if (raw) { const saved = JSON.parse(raw) as EcoState; setState(withDemoData({ ...saved, username: saved.username ?? null })); }
     } catch { /* ignore */ }
     setReady(true);
   }, []);
@@ -223,7 +231,19 @@ export function EcoProvider({ children }: { children: ReactNode }) {
   const value: Ctx = {
     state, ready, actor, submitMission, decide, saveRule, setAttendance, closeCycle, awardSeal, logEvent,
     setRole: (r) => setState((st) => ({ ...st, role: r, audit: r ? [ev(ROLE_INFO[r].person, "Login", "Sessão", `Perfil ${ROLE_INFO[r].label}`), ...st.audit] : st.audit })),
-    reset: () => { localStorage.removeItem(KEY); setState({ ...seed(), role: state.role }); },
+    login: (account) => setState((st) => ({
+      ...st, role: account.role, username: account.username,
+      currentStudentId: account.studentId ?? st.currentStudentId,
+      audit: [ev(ROLE_INFO[account.role].person, "Login", "Sessão", `Usuário ${account.username} · perfil ${ROLE_INFO[account.role].label}`), ...st.audit],
+    })),
+    logFailedLogin: (username, roleLabel) => setState((st) => ({
+      ...st, audit: [ev("Anônimo", "Login recusado", "Sessão", `Usuário informado: ${username.trim().slice(0, 40) || "(vazio)"} · perfil ${roleLabel}`), ...st.audit],
+    })),
+    logout: () => setState((st) => ({
+      ...st, role: null, username: null,
+      audit: st.role ? [ev(ROLE_INFO[st.role].person, "Logout", "Sessão", `Usuário ${st.username ?? "—"}`), ...st.audit] : st.audit,
+    })),
+    reset: () => { localStorage.removeItem(KEY); setState({ ...seed(), role: state.role, username: state.username }); },
   };
   return <EcoCtx.Provider value={value}>{children}</EcoCtx.Provider>;
 }
