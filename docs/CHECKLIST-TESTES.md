@@ -2,6 +2,14 @@
 
 Execute `bun run dev`, abra o endereço exibido e marque cada item. Repita nas larguras **360, 390, 768 e 1440 px** (DevTools → modo dispositivo). Registre data, responsável e resultado.
 
+## Login
+- [ ] Início mostra só 4 perfis + link discreto "Acesso da equipe"; clicar leva à tela de login do perfil.
+- [ ] Cada conta (ver README) entra e cai na página inicial correta; "Preencher automaticamente" funciona; mostrar/ocultar senha funciona.
+- [ ] Senha errada e campos vazios mostram mensagem; conta de outro perfil é recusada; Voltar retorna à seleção.
+- [ ] Ana (`ana.souza`) vê as missões/pontos de `st1`; admin entra só por "Acesso da equipe" e abre a auditoria com os eventos de login/logout.
+- [ ] "Sair" volta ao início; digitar `/app/auditoria` como aluno redireciona; `/app/*` sem sessão volta ao início.
+- [ ] Aba do navegador mostra o ícone da folha e o título "Eco School — Escolas Sustentáveis e Conectadas" (limpe o cache se aparecer o ícone antigo).
+
 ## Fluxos por perfil
 - [ ] Início: logo nítida e sem distorção, slogan, texto de apresentação e 5 cartões de perfil; cada um entra na página inicial do perfil.
 - [ ] Aluno: Missões → enviar missão com evidência; quiz com correção automática; Progresso (pontos, sequência, marcos); Ranking.
