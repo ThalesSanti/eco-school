@@ -17,26 +17,194 @@ interface DemoStudent {
 
 export const DEMO_STUDENT_DEFS: DemoStudent[] = [
   // EE Prof. Jahu Centro (s1) — complementam os alunos já existentes
-  { id: "st7", name: "Gabriela Nunes", classId: "8A", schoolId: "s1", entries: [["h1", 5], ["h4", 3], ["h3", 2]] },
-  { id: "st8", name: "Henrique Lopes", classId: "8B", schoolId: "s1", entries: [["h2", 6], ["h1", 4]] },
-  { id: "st9", name: "Isabela Freitas", classId: "9A", schoolId: "s1", entries: [["h4", 5], ["h1", 3], ["h2", 2]] },
-  { id: "st10", name: "João Pedro Dias", classId: "9A", schoolId: "s1", entries: [["h4", 6], ["h1", 5], ["h2", 4], ["h5", 3], ["h3", 1]] },
+  {
+    id: "st7",
+    name: "Gabriela Nunes",
+    classId: "8A",
+    schoolId: "s1",
+    entries: [
+      ["h1", 5],
+      ["h4", 3],
+      ["h3", 2],
+    ],
+  },
+  {
+    id: "st8",
+    name: "Henrique Lopes",
+    classId: "8B",
+    schoolId: "s1",
+    entries: [
+      ["h2", 6],
+      ["h1", 4],
+    ],
+  },
+  {
+    id: "st9",
+    name: "Isabela Freitas",
+    classId: "9A",
+    schoolId: "s1",
+    entries: [
+      ["h4", 5],
+      ["h1", 3],
+      ["h2", 2],
+    ],
+  },
+  {
+    id: "st10",
+    name: "João Pedro Dias",
+    classId: "9A",
+    schoolId: "s1",
+    entries: [
+      ["h4", 6],
+      ["h1", 5],
+      ["h2", 4],
+      ["h5", 3],
+      ["h3", 1],
+    ],
+  },
   // EE Vila Ribeiro (s2)
-  { id: "st11", name: "Larissa Prado", classId: "8A", schoolId: "s2", entries: [["h4", 6], ["h2", 5], ["h5", 2]] },
-  { id: "st12", name: "Mateus Ribeiro", classId: "8A", schoolId: "s2", entries: [["h4", 4], ["h1", 2]] },
-  { id: "st13", name: "Natália Cruz", classId: "8B", schoolId: "s2", entries: [["h5", 3], ["h2", 2], ["h1", 1], ["h3", 1, "pendente"]] },
-  { id: "st14", name: "Otávio Lima", classId: "9A", schoolId: "s2", entries: [["h5", 5], ["h3", 2, "rejeitada"]] },
-  { id: "st15", name: "Paula Gomes", classId: "9A", schoolId: "s2", entries: [["h4", 5], ["h5", 3]] },
+  {
+    id: "st11",
+    name: "Larissa Prado",
+    classId: "8A",
+    schoolId: "s2",
+    entries: [
+      ["h4", 6],
+      ["h2", 5],
+      ["h5", 2],
+    ],
+  },
+  {
+    id: "st12",
+    name: "Mateus Ribeiro",
+    classId: "8A",
+    schoolId: "s2",
+    entries: [
+      ["h4", 4],
+      ["h1", 2],
+    ],
+  },
+  {
+    id: "st13",
+    name: "Natália Cruz",
+    classId: "8B",
+    schoolId: "s2",
+    entries: [
+      ["h5", 3],
+      ["h2", 2],
+      ["h1", 1],
+      ["h3", 1, "pendente"],
+    ],
+  },
+  {
+    id: "st14",
+    name: "Otávio Lima",
+    classId: "9A",
+    schoolId: "s2",
+    entries: [
+      ["h5", 5],
+      ["h3", 2, "rejeitada"],
+    ],
+  },
+  {
+    id: "st15",
+    name: "Paula Gomes",
+    classId: "9A",
+    schoolId: "s2",
+    entries: [
+      ["h4", 5],
+      ["h5", 3],
+    ],
+  },
   // EE Jardim Pires (s3)
-  { id: "st16", name: "Rafael Torres", classId: "8A", schoolId: "s3", entries: [["h1", 6], ["h2", 6], ["h4", 4]] },
-  { id: "st17", name: "Sofia Barros", classId: "8A", schoolId: "s3", entries: [["h4", 6], ["h1", 5], ["h2", 3], ["h5", 3]] },
-  { id: "st18", name: "Tiago Vieira", classId: "8B", schoolId: "s3", entries: [["h3", 4], ["h5", 1]] },
-  { id: "st19", name: "Valentina Cardoso", classId: "9A", schoolId: "s3", entries: [["h1", 6], ["h4", 5], ["h2", 3]] },
-  { id: "st20", name: "Yuri Matos", classId: "9A", schoolId: "s3", entries: [["h3", 2], ["h4", 0, "pendente"]] },
+  {
+    id: "st16",
+    name: "Rafael Torres",
+    classId: "8A",
+    schoolId: "s3",
+    entries: [
+      ["h1", 6],
+      ["h2", 6],
+      ["h4", 4],
+    ],
+  },
+  {
+    id: "st17",
+    name: "Sofia Barros",
+    classId: "8A",
+    schoolId: "s3",
+    entries: [
+      ["h4", 6],
+      ["h1", 5],
+      ["h2", 3],
+      ["h5", 3],
+    ],
+  },
+  {
+    id: "st18",
+    name: "Tiago Vieira",
+    classId: "8B",
+    schoolId: "s3",
+    entries: [
+      ["h3", 4],
+      ["h5", 1],
+    ],
+  },
+  {
+    id: "st19",
+    name: "Valentina Cardoso",
+    classId: "9A",
+    schoolId: "s3",
+    entries: [
+      ["h1", 6],
+      ["h4", 5],
+      ["h2", 3],
+    ],
+  },
+  {
+    id: "st20",
+    name: "Yuri Matos",
+    classId: "9A",
+    schoolId: "s3",
+    entries: [
+      ["h3", 2],
+      ["h4", 0, "pendente"],
+    ],
+  },
   // EE Bariri Norte (s4)
-  { id: "st21", name: "Alice Fonseca", classId: "8A", schoolId: "s4", entries: [["h4", 5], ["h1", 4], ["h2", 2], ["h5", 1]] },
-  { id: "st22", name: "Breno Teixeira", classId: "8A", schoolId: "s4", entries: [["h1", 3], ["h2", 1]] },
-  { id: "st23", name: "Camila Duarte", classId: "8B", schoolId: "s4", entries: [["h4", 6], ["h1", 4], ["h5", 3]] },
+  {
+    id: "st21",
+    name: "Alice Fonseca",
+    classId: "8A",
+    schoolId: "s4",
+    entries: [
+      ["h4", 5],
+      ["h1", 4],
+      ["h2", 2],
+      ["h5", 1],
+    ],
+  },
+  {
+    id: "st22",
+    name: "Breno Teixeira",
+    classId: "8A",
+    schoolId: "s4",
+    entries: [
+      ["h1", 3],
+      ["h2", 1],
+    ],
+  },
+  {
+    id: "st23",
+    name: "Camila Duarte",
+    classId: "8B",
+    schoolId: "s4",
+    entries: [
+      ["h4", 6],
+      ["h1", 4],
+      ["h5", 3],
+    ],
+  },
   { id: "st24", name: "Davi Moreira", classId: "9A", schoolId: "s4", entries: [["h2", 2]] },
   // EE Itapuí (s5): propositalmente SEM alunos cadastrados, para exercitar o estado vazio.
 ];

@@ -16,11 +16,37 @@ export interface DemoAccount {
 export const DEMO_PASSWORD = "eco2026";
 
 export const DEMO_ACCOUNTS: DemoAccount[] = [
-  { username: "ana.souza", password: DEMO_PASSWORD, role: "aluno", displayName: "Ana Souza", studentId: "st1" },
-  { username: "carlos.lima", password: DEMO_PASSWORD, role: "professor", displayName: "Prof. Carlos Lima" },
-  { username: "marta.reis", password: DEMO_PASSWORD, role: "gestor", displayName: "Dir. Marta Reis" },
-  { username: "diretoria.jau", password: DEMO_PASSWORD, role: "regional", displayName: "Diretoria de Ensino · Jaú" },
-  { username: "equipe.ecoschool", password: DEMO_PASSWORD, role: "admin", displayName: "Equipe Eco School" },
+  {
+    username: "ana.souza",
+    password: DEMO_PASSWORD,
+    role: "aluno",
+    displayName: "Ana Souza",
+    studentId: "st1",
+  },
+  {
+    username: "carlos.lima",
+    password: DEMO_PASSWORD,
+    role: "professor",
+    displayName: "Prof. Carlos Lima",
+  },
+  {
+    username: "marta.reis",
+    password: DEMO_PASSWORD,
+    role: "gestor",
+    displayName: "Dir. Marta Reis",
+  },
+  {
+    username: "diretoria.jau",
+    password: DEMO_PASSWORD,
+    role: "regional",
+    displayName: "Diretoria de Ensino · Jaú",
+  },
+  {
+    username: "equipe.ecoschool",
+    password: DEMO_PASSWORD,
+    role: "admin",
+    displayName: "Equipe Eco School",
+  },
 ];
 
 /** Perfis exibidos na seleção pública. O administrador entra por "Acesso da equipe". */
@@ -36,22 +62,32 @@ export interface AuthProvider {
   signIn(username: string, password: string, selectedRole: Role): Promise<AuthResult>;
 }
 
-export function verifyCredentials(username: string, password: string, selectedRole: Role): AuthResult {
+export function verifyCredentials(
+  username: string,
+  password: string,
+  selectedRole: Role,
+): AuthResult {
   const u = username.trim().toLowerCase();
   const account = DEMO_ACCOUNTS.find((a) => a.username === u);
   if (!account || account.password !== password) {
-    return { ok: false, reason: "invalid", message: "Usuário ou senha incorretos. Confira os dados e tente novamente." };
+    return {
+      ok: false,
+      reason: "invalid",
+      message: "Usuário ou senha incorretos. Confira os dados e tente novamente.",
+    };
   }
   if (account.role !== selectedRole) {
     return {
       ok: false,
       reason: "wrong-profile",
-      message: "Esta conta pertence a outro perfil. Volte e selecione o perfil correto para entrar.",
+      message:
+        "Esta conta pertence a outro perfil. Volte e selecione o perfil correto para entrar.",
     };
   }
   return { ok: true, account };
 }
 
 export const demoAuthProvider: AuthProvider = {
-  signIn: (username, password, selectedRole) => Promise.resolve(verifyCredentials(username, password, selectedRole)),
+  signIn: (username, password, selectedRole) =>
+    Promise.resolve(verifyCredentials(username, password, selectedRole)),
 };

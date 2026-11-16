@@ -23,9 +23,30 @@ const SCOPE_TAB_LABEL = (role: Role, scope: RankingScope) => {
 };
 
 const TIER = {
-  1: { label: "1º lugar", border: "border-gold", bg: "bg-gold-soft", bar: "bg-gold", icon: "text-gold", h: "h-28 sm:h-36" },
-  2: { label: "2º lugar", border: "border-silver", bg: "bg-silver-soft", bar: "bg-silver", icon: "text-silver", h: "h-20 sm:h-28" },
-  3: { label: "3º lugar", border: "border-bronze", bg: "bg-bronze-soft", bar: "bg-bronze", icon: "text-bronze", h: "h-16 sm:h-24" },
+  1: {
+    label: "1º lugar",
+    border: "border-gold",
+    bg: "bg-gold-soft",
+    bar: "bg-gold",
+    icon: "text-gold",
+    h: "h-28 sm:h-36",
+  },
+  2: {
+    label: "2º lugar",
+    border: "border-silver",
+    bg: "bg-silver-soft",
+    bar: "bg-silver",
+    icon: "text-silver",
+    h: "h-20 sm:h-28",
+  },
+  3: {
+    label: "3º lugar",
+    border: "border-bronze",
+    bg: "bg-bronze-soft",
+    bar: "bg-bronze",
+    icon: "text-bronze",
+    h: "h-16 sm:h-24",
+  },
 } as const;
 const tierOf = (rank: number) => TIER[(rank <= 1 ? 1 : rank === 2 ? 2 : 3) as 1 | 2 | 3];
 
@@ -44,7 +65,15 @@ function DemoTag({ show }: { show: boolean }) {
   );
 }
 
-function Podium({ entries, myId, scope }: { entries: RankedStudent[]; myId: string | null; scope: RankingScope }) {
+function Podium({
+  entries,
+  myId,
+  scope,
+}: {
+  entries: RankedStudent[];
+  myId: string | null;
+  scope: RankingScope;
+}) {
   const top = entries.slice(0, 3);
   // Disposição clássica de pódio: 2º, 1º, 3º.
   const slots = [top[1], top[0], top[2]].filter((x): x is RankedStudent => !!x);
@@ -72,7 +101,9 @@ function Podium({ entries, myId, scope }: { entries: RankedStudent[]; myId: stri
                 {e.displayName}
                 {mine && <span className="ml-1 text-primary">(você)</span>}
               </div>
-              <div className="w-full truncate text-xs text-muted-foreground">{subtitleFor(e, scope)}</div>
+              <div className="w-full truncate text-xs text-muted-foreground">
+                {subtitleFor(e, scope)}
+              </div>
               <div className="mt-1 font-display text-lg font-extrabold text-foreground">
                 {e.points} <span className="text-xs font-semibold text-muted-foreground">pts</span>
               </div>
@@ -112,7 +143,11 @@ function Row({ e, scope, mine }: { e: RankedStudent; scope: RankingScope; mine: 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="truncate font-semibold text-foreground">{e.displayName}</span>
-          {mine && <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-semibold text-primary-foreground">Você</span>}
+          {mine && (
+            <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-semibold text-primary-foreground">
+              Você
+            </span>
+          )}
           <DemoTag show={e.demo} />
         </div>
         <div className="truncate text-xs text-muted-foreground">{subtitleFor(e, scope)}</div>
@@ -156,12 +191,21 @@ export function StudentRanking() {
   const region = regions.includes(regionSel) ? regionSel : (regions[0] ?? "");
 
   // Escola fixa para aluno (a dele), professor e gestor (escola da unidade); regional escolhe.
-  const fixedSchoolId = isStudent ? me?.schoolId : role === "regional" ? undefined : state.schools[0]?.id;
-  const schoolId = fixedSchoolId ?? (state.schools.some((s) => s.id === schoolSel) ? schoolSel : state.schools[0]?.id);
+  const fixedSchoolId = isStudent
+    ? me?.schoolId
+    : role === "regional"
+      ? undefined
+      : state.schools[0]?.id;
+  const schoolId =
+    fixedSchoolId ??
+    (state.schools.some((s) => s.id === schoolSel) ? schoolSel : state.schools[0]?.id);
   const school = state.schools.find((s) => s.id === schoolId);
 
   const classes = useMemo(
-    () => [...new Set(state.students.filter((s) => s.schoolId === schoolId).map((s) => s.classId))].sort(),
+    () =>
+      [
+        ...new Set(state.students.filter((s) => s.schoolId === schoolId).map((s) => s.classId)),
+      ].sort(),
     [state.students, schoolId],
   );
   const classId = isStudent ? me?.classId : classes.includes(classSel) ? classSel : classes[0];
@@ -173,7 +217,11 @@ export function StudentRanking() {
   const mine = myId ? (result.entries.find((e) => e.studentId === myId) ?? null) : null;
   const message = isStudent ? motivationalMessage(mine, result.entries, scope) : null;
   const scopeName =
-    scope === "regiao" ? `Região ${region}` : scope === "turma" ? `Turma ${classId ?? "—"} · ${school?.name ?? ""}` : (school?.name ?? "");
+    scope === "regiao"
+      ? `Região ${region}`
+      : scope === "turma"
+        ? `Turma ${classId ?? "—"} · ${school?.name ?? ""}`
+        : (school?.name ?? "");
 
   return (
     <div className="grid gap-4">
@@ -192,9 +240,15 @@ export function StudentRanking() {
         {scope === "regiao" && (
           <label className="grid min-w-40 gap-1 text-sm text-muted-foreground">
             Região
-            <select className="m3-field" value={region} onChange={(e) => setRegionSel(e.target.value)}>
+            <select
+              className="m3-field"
+              value={region}
+              onChange={(e) => setRegionSel(e.target.value)}
+            >
               {regions.map((r) => (
-                <option key={r} value={r}>{r}</option>
+                <option key={r} value={r}>
+                  {r}
+                </option>
               ))}
             </select>
           </label>
@@ -202,9 +256,15 @@ export function StudentRanking() {
         {scope !== "regiao" && role === "regional" && (
           <label className="grid min-w-52 gap-1 text-sm text-muted-foreground">
             Escola
-            <select className="m3-field" value={schoolId ?? ""} onChange={(e) => setSchoolSel(e.target.value)}>
+            <select
+              className="m3-field"
+              value={schoolId ?? ""}
+              onChange={(e) => setSchoolSel(e.target.value)}
+            >
               {state.schools.map((s) => (
-                <option key={s.id} value={s.id}>{s.name}</option>
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
               ))}
             </select>
           </label>
@@ -212,10 +272,17 @@ export function StudentRanking() {
         {scope === "turma" && !isStudent && (
           <label className="grid min-w-32 gap-1 text-sm text-muted-foreground">
             Turma
-            <select className="m3-field" value={classId ?? ""} onChange={(e) => setClassSel(e.target.value)} disabled={classes.length === 0}>
+            <select
+              className="m3-field"
+              value={classId ?? ""}
+              onChange={(e) => setClassSel(e.target.value)}
+              disabled={classes.length === 0}
+            >
               {classes.length === 0 && <option value="">Sem turmas</option>}
               {classes.map((c) => (
-                <option key={c} value={c}>{c}</option>
+                <option key={c} value={c}>
+                  {c}
+                </option>
               ))}
             </select>
           </label>
@@ -226,19 +293,40 @@ export function StudentRanking() {
       {isStudent ? (
         <section className="m3-card-hi flex flex-wrap items-center gap-4" aria-live="polite">
           <div className="grid size-14 shrink-0 place-items-center rounded-2xl bg-primary text-primary-foreground">
-            <Icon name={mine && mine.rank <= 3 ? "emoji_events" : "trending_up"} fill className="!text-3xl" />
+            <Icon
+              name={mine && mine.rank <= 3 ? "emoji_events" : "trending_up"}
+              fill
+              className="!text-3xl"
+            />
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {mine ? `Sua posição: ${mine.rank}º de ${result.entries.length}` : "Sua posição"}
             </div>
-            <p className="mt-0.5 font-display text-lg font-bold leading-snug text-foreground">{message}</p>
+            <p className="mt-0.5 font-display text-lg font-bold leading-snug text-foreground">
+              {message}
+            </p>
           </div>
           {mine && (
             <div className="flex gap-4 text-center text-xs text-muted-foreground">
-              <div><div className="font-display text-xl font-extrabold text-primary">{mine.points}</div>pontos</div>
-              <div><div className="font-display text-xl font-extrabold text-foreground">{mine.approvedCount}</div>missões</div>
-              <div><div className="font-display text-xl font-extrabold text-foreground">{mine.activeDays}</div>dias</div>
+              <div>
+                <div className="font-display text-xl font-extrabold text-primary">
+                  {mine.points}
+                </div>
+                pontos
+              </div>
+              <div>
+                <div className="font-display text-xl font-extrabold text-foreground">
+                  {mine.approvedCount}
+                </div>
+                missões
+              </div>
+              <div>
+                <div className="font-display text-xl font-extrabold text-foreground">
+                  {mine.activeDays}
+                </div>
+                dias
+              </div>
             </div>
           )}
         </section>
@@ -246,8 +334,13 @@ export function StudentRanking() {
         <section className="m3-card-hi flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <Icon name="groups" className="text-primary" />
           <span className="font-semibold text-foreground">{scopeName}</span>
-          <span>· {result.entries.length} {result.entries.length === 1 ? "aluno pontuou" : "alunos pontuaram"}</span>
-          {result.withoutPoints > 0 && <span>· {result.withoutPoints} ainda sem missões aprovadas</span>}
+          <span>
+            · {result.entries.length}{" "}
+            {result.entries.length === 1 ? "aluno pontuou" : "alunos pontuaram"}
+          </span>
+          {result.withoutPoints > 0 && (
+            <span>· {result.withoutPoints} ainda sem missões aprovadas</span>
+          )}
         </section>
       )}
 
@@ -280,10 +373,11 @@ export function StudentRanking() {
       <p className="flex items-start gap-2 text-xs text-muted-foreground">
         <Icon name="shield" className="!text-base" />
         <span>
-          Ordem: pontos confirmados (missões aprovadas + bônus de assiduidade), depois missões aprovadas e dias ativos.
-          Atividades pendentes ou rejeitadas não contam. Nomes abreviados para proteger a privacidade. Todos os dados
-          desta versão são fictícios de demonstração; os registros marcados como “demo” foram criados apenas para
-          exemplificar o ranking entre escolas.
+          Ordem: pontos confirmados (missões aprovadas + bônus de assiduidade), depois missões
+          aprovadas e dias ativos. Atividades pendentes ou rejeitadas não contam. Nomes abreviados
+          para proteger a privacidade. Todos os dados desta versão são fictícios de demonstração; os
+          registros marcados como “demo” foram criados apenas para exemplificar o ranking entre
+          escolas.
         </span>
       </p>
     </div>

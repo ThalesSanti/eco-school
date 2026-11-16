@@ -1,11 +1,20 @@
 import { describe, expect, it } from "vitest";
-import { DEMO_ACCOUNTS, PUBLIC_ROLES, accountForRole, demoAuthProvider, verifyCredentials } from "./demo-auth";
+import {
+  DEMO_ACCOUNTS,
+  PUBLIC_ROLES,
+  accountForRole,
+  demoAuthProvider,
+  verifyCredentials,
+} from "./demo-auth";
 
 describe("autenticação demonstrativa", () => {
   it("todas as contas fictícias entram no perfil correto", () => {
     const esperado = [
-      ["ana.souza", "aluno"], ["carlos.lima", "professor"], ["marta.reis", "gestor"],
-      ["diretoria.jau", "regional"], ["equipe.ecoschool", "admin"],
+      ["ana.souza", "aluno"],
+      ["carlos.lima", "professor"],
+      ["marta.reis", "gestor"],
+      ["diretoria.jau", "regional"],
+      ["equipe.ecoschool", "admin"],
     ] as const;
     for (const [u, role] of esperado) {
       const r = verifyCredentials(u, "eco2026", role);
@@ -24,7 +33,10 @@ describe("autenticação demonstrativa", () => {
   it("credenciais incorretas são recusadas com mensagem amigável", () => {
     const r = verifyCredentials("ana.souza", "errada", "aluno");
     expect(r.ok).toBe(false);
-    if (!r.ok) { expect(r.reason).toBe("invalid"); expect(r.message).toMatch(/incorretos/); }
+    if (!r.ok) {
+      expect(r.reason).toBe("invalid");
+      expect(r.message).toMatch(/incorretos/);
+    }
     expect(verifyCredentials("", "", "aluno").ok).toBe(false);
     expect(verifyCredentials("inexistente", "eco2026", "aluno").ok).toBe(false);
   });
