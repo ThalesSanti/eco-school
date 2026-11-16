@@ -1,7 +1,7 @@
 # Eco School — Roadmap
 
 ## Sprint atual (MVP de validação) — entregue
-- [x] Seleção de perfil (aluno, professor, gestor escolar, gestor regional, admin) com menus por perfil
+- [x] Seleção pública de quatro perfis (aluno, professor, gestor escolar, gestor regional); administrador por Acesso da equipe
 - [x] RF01/US01 Missões do dia com status (disponível, enviada, validada, rejeitada, expirada) e prazo
 - [x] RF02/US02 Registro com descrição/foto, bloqueio após prazo (RN01) e sem envio duplicado
 - [x] Quiz com correção automática (RN02)
@@ -18,14 +18,14 @@
 
 ## Sprint final — redesign e ranking de alunos
 - [x] Identidade visual clara baseada na logo oficial, aplicada a todas as telas
-- [x] Tela inicial de apresentação com logo, slogan e cinco perfis
+- [x] Tela inicial de apresentação com logo, slogan, quatro cartões públicos e acesso administrativo separado
 - [x] Ranking de alunos por escola, turma e região (pódio, filtros funcionais, destaque da própria posição)
 - [x] Ranking disponível para aluno, professor, gestor escolar e regional; ranking de escolas preservado
 - [x] Indicadores de engajamento no Progresso (sequência, semana anterior, marcos)
 - [x] Testes unitários do ranking, dos dados de demonstração e da navegação
 
 ## Adiado para próximo sprint
-- [ ] Migrar os perfis de demonstração para login real e RBAC em todo o app (RNF04); a análise por IA já exige conta autorizada
+- [ ] Migrar perfis de demonstração para login real e RBAC em todo o app (RNF04)
 - [ ] Migrar os dados do MVP do navegador para Lovable Cloud; Cloud já está ativo
 - [ ] Armazenamento seguro de fotos de evidência
 - [ ] Cadastro/edição de missões, turmas, escolas e usuários pelo gestor
@@ -43,7 +43,5 @@
 - [x] Formulários acessíveis e controles confortáveis ao toque
 - [x] Conferir envio, aprovação/rejeição e retorno ao progresso em celulares
 
-## Avaliação assistida por IA
-- [x] Enviar descrição e foto para análise dos critérios da missão
-- [x] Exibir sugestão de feedback sem alterar aprovação ou pontos automaticamente
-- [x] Proteger análise com acesso autenticado e conferir fluxo real
+## Escopo removido
+- Avaliação assistida por IA: removida do MVP; o professor continua validando manualmente as evidências na página Validação.

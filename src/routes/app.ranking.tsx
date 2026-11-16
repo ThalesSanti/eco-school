@@ -6,12 +6,20 @@ import { SchoolRanking } from "@/components/eco/school-ranking";
 import { StudentRanking } from "@/components/eco/student-ranking";
 
 export const Route = createFileRoute("/app/ranking")({
-  head: () => ({ meta: [
-    { title: "Ranking — Eco School" },
-    { name: "description", content: "Ranking de alunos por escola, turma e região e ranking normalizado de escolas." },
-    { property: "og:title", content: "Ranking — Eco School" },
-    { property: "og:description", content: "Ranking de alunos por escola, turma e região e ranking normalizado de escolas." },
-  ] }),
+  head: () => ({
+    meta: [
+      { title: "Ranking — Eco School" },
+      {
+        name: "description",
+        content: "Ranking de alunos por escola, turma e região e ranking normalizado de escolas.",
+      },
+      { property: "og:title", content: "Ranking — Eco School" },
+      {
+        property: "og:description",
+        content: "Ranking de alunos por escola, turma e região e ranking normalizado de escolas.",
+      },
+    ],
+  }),
   component: Ranking,
 });
 
@@ -26,14 +34,20 @@ function Ranking() {
     <>
       <PageHeader
         title={regional ? "Ranking regional" : "Ranking de alunos"}
-        subtitle={regional
-          ? "Compare escolas pelo score normalizado ou acompanhe os alunos mais engajados"
-          : "Quem mais participa das missões sustentáveis — com pontos confirmados"}
+        subtitle={
+          regional
+            ? "Compare escolas pelo score normalizado ou acompanhe os alunos mais engajados"
+            : "Quem mais participa das missões sustentáveis — com pontos confirmados"
+        }
       />
       {regional && (
         <div className="eco-segment mb-4" role="group" aria-label="Tipo de ranking regional">
-          <button aria-pressed={view === "escolas"} onClick={() => setView("escolas")}>Escolas</button>
-          <button aria-pressed={view === "alunos"} onClick={() => setView("alunos")}>Alunos</button>
+          <button aria-pressed={view === "escolas"} onClick={() => setView("escolas")}>
+            Escolas
+          </button>
+          <button aria-pressed={view === "alunos"} onClick={() => setView("alunos")}>
+            Alunos
+          </button>
         </div>
       )}
       {showSchools ? <SchoolRanking /> : <StudentRanking />}

@@ -23,7 +23,8 @@ export function studentPoints(
   opts: { attendanceEnabled: boolean; attendanceBonus: number; minDays: number },
 ): number {
   const base = validatedPoints.reduce((a, b) => a + b, 0);
-  const bonus = opts.attendanceEnabled && distinctActiveDays >= opts.minDays ? opts.attendanceBonus : 0;
+  const bonus =
+    opts.attendanceEnabled && distinctActiveDays >= opts.minDays ? opts.attendanceBonus : 0;
   return base + bonus;
 }
 
@@ -45,7 +46,10 @@ export function schoolScore(totalPoints: number, activeStudents: number, enrolle
 }
 
 /** RN03: conversão proporcional, limitada ao teto da regra e ao teto central. */
-export function academicBonus(points: number, rule: Pick<BonusRule, "pointsPerTenth" | "maxBonus">): number {
+export function academicBonus(
+  points: number,
+  rule: Pick<BonusRule, "pointsPerTenth" | "maxBonus">,
+): number {
   if (rule.pointsPerTenth <= 0) return 0;
   const raw = Math.floor(points / rule.pointsPerTenth) / 10;
   const cap = Math.min(rule.maxBonus, CENTRAL_BONUS_CAP);

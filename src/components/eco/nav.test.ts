@@ -12,9 +12,15 @@ describe("navegação por perfil", () => {
   });
   it("preserva as páginas iniciais e os itens existentes de cada perfil", () => {
     expect(HOME_FOR.regional).toBe("/app/ranking");
-    expect(NAV.aluno.map((i) => i.to)).toEqual(expect.arrayContaining(["/app/missoes", "/app/progresso"]));
-    expect(NAV.professor.map((i) => i.to)).toEqual(expect.arrayContaining(["/app/validacao", "/app/painel"]));
-    expect(NAV.gestor.map((i) => i.to)).toEqual(expect.arrayContaining(["/app/painel", "/app/regras", "/app/relatorios"]));
+    expect(NAV.aluno.map((i) => i.to)).toEqual(
+      expect.arrayContaining(["/app/missoes", "/app/progresso"]),
+    );
+    expect(NAV.professor.map((i) => i.to)).toEqual(
+      expect.arrayContaining(["/app/validacao", "/app/painel"]),
+    );
+    expect(NAV.gestor.map((i) => i.to)).toEqual(
+      expect.arrayContaining(["/app/painel", "/app/regras", "/app/relatorios"]),
+    );
     expect(NAV.regional.map((i) => i.to)).toContain("/app/relatorios");
   });
 

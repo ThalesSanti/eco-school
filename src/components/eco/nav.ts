@@ -1,6 +1,14 @@
 import type { Role } from "@/lib/eco-store";
 
-export type AppPath = "/app/missoes" | "/app/progresso" | "/app/validacao" | "/app/painel" | "/app/regras" | "/app/ranking" | "/app/relatorios" | "/app/auditoria";
+export type AppPath =
+  | "/app/missoes"
+  | "/app/progresso"
+  | "/app/validacao"
+  | "/app/painel"
+  | "/app/regras"
+  | "/app/ranking"
+  | "/app/relatorios"
+  | "/app/auditoria";
 
 export const NAV: Record<Role, { to: AppPath; label: string; icon: string }[]> = {
   aluno: [
@@ -30,7 +38,11 @@ export const NAV: Record<Role, { to: AppPath; label: string; icon: string }[]> =
 };
 
 export const HOME_FOR: Record<Role, AppPath> = {
-  aluno: "/app/missoes", professor: "/app/validacao", gestor: "/app/painel", regional: "/app/ranking", admin: "/app/auditoria",
+  aluno: "/app/missoes",
+  professor: "/app/validacao",
+  gestor: "/app/painel",
+  regional: "/app/ranking",
+  admin: "/app/auditoria",
 };
 
 /** Guarda de acesso por perfil: uma URL só é permitida se pertencer à navegação do perfil. */

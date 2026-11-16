@@ -16,9 +16,13 @@ function AppLayout() {
   const { pathname } = useLocation();
 
   const allowed = canAccess(state.role, pathname);
-  useEffect(() => { if (ready && !state.role) nav({ to: "/" }); }, [ready, state.role, nav]);
+  useEffect(() => {
+    if (ready && !state.role) nav({ to: "/" });
+  }, [ready, state.role, nav]);
   // URL de outro perfil (digitada à mão): volta para a página inicial do perfil conectado.
-  useEffect(() => { if (ready && state.role && !allowed) nav({ to: HOME_FOR[state.role], replace: true }); }, [ready, state.role, allowed, nav]);
+  useEffect(() => {
+    if (ready && state.role && !allowed) nav({ to: HOME_FOR[state.role], replace: true });
+  }, [ready, state.role, allowed, nav]);
   if (!ready || !state.role) return <div className="min-h-screen bg-background" />;
 
   const items = NAV[state.role];
@@ -32,8 +36,15 @@ function AppLayout() {
           <LogoMark size={52} />
         </Link>
         {items.map((i) => (
-          <Link key={i.to} to={i.to} data-active={pathname.startsWith(i.to)} className="nav-pill flex flex-col items-center gap-1 text-xs text-muted-foreground">
-            <span className="nav-indicator grid h-8 w-14 place-items-center rounded-full transition"><Icon name={i.icon} /></span>
+          <Link
+            key={i.to}
+            to={i.to}
+            data-active={pathname.startsWith(i.to)}
+            className="nav-pill flex flex-col items-center gap-1 text-xs text-muted-foreground"
+          >
+            <span className="nav-indicator grid h-8 w-14 place-items-center rounded-full transition">
+              <Icon name={i.icon} />
+            </span>
             {i.label}
           </Link>
         ))}
@@ -41,23 +52,54 @@ function AppLayout() {
 
       {/* Top app bar */}
       <header className="app-topbar sticky top-0 z-20 flex items-center gap-3 border-b border-border bg-background/90 px-4 py-3 backdrop-blur md:px-8">
-        <Link to="/" aria-label="Eco School — início" className="shrink-0 md:hidden"><LogoMark size={40} /></Link>
+        <Link to="/" aria-label="Eco School — início" className="shrink-0 md:hidden">
+          <LogoMark size={40} />
+        </Link>
         <div className="min-w-0 flex-1">
-          <div className="truncate text-xs text-muted-foreground">{info.label} · {state.period}</div>
-          <div className="truncate font-display font-semibold text-foreground">{info.person}{state.username ? <span className="ml-2 hidden text-xs font-normal text-muted-foreground sm:inline">@{state.username}</span> : null}</div>
+          <div className="truncate text-xs text-muted-foreground">
+            {info.label} · {state.period}
+          </div>
+          <div className="truncate font-display font-semibold text-foreground">
+            {info.person}
+            {state.username ? (
+              <span className="ml-2 hidden text-xs font-normal text-muted-foreground sm:inline">
+                @{state.username}
+              </span>
+            ) : null}
+          </div>
         </div>
         <div className="flex shrink-0 items-center gap-1">
-        <Button variant="ghost" onClick={() => { reset(); }} aria-label="Restaurar dados de demonstração" title="Restaurar dados de demonstração" className="size-12 shrink-0 rounded-full p-0 text-muted-foreground">
-          <Icon name="restart_alt" />
-        </Button>
-        <Button variant="outline" onClick={() => { logout(); nav({ to: "/" }); }} aria-label="Sair da conta" title="Sair da conta" className="size-12 shrink-0 rounded-full p-0 sm:w-auto sm:px-4">
-          <Icon name="logout" className="!text-lg" /><span className="hidden sm:inline">Sair</span>
-        </Button>
+          <Button
+            variant="ghost"
+            onClick={() => {
+              reset();
+            }}
+            aria-label="Restaurar dados de demonstração"
+            title="Restaurar dados de demonstração"
+            className="size-12 shrink-0 rounded-full p-0 text-muted-foreground"
+          >
+            <Icon name="restart_alt" />
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => {
+              logout();
+              nav({ to: "/" });
+            }}
+            aria-label="Sair da conta"
+            title="Sair da conta"
+            className="size-12 shrink-0 rounded-full p-0 sm:w-auto sm:px-4"
+          >
+            <Icon name="logout" className="!text-lg" />
+            <span className="hidden sm:inline">Sair</span>
+          </Button>
         </div>
       </header>
 
       <main className="app-main mx-auto min-w-0 max-w-6xl px-4 pb-28 pt-2 md:px-8 md:pb-12">
-        {allowed ? <Outlet /> : (
+        {allowed ? (
+          <Outlet />
+        ) : (
           <div className="m3-card mt-10 text-center">
             <Icon name="lock" className="!text-4xl text-destructive" />
             <p className="mt-2 text-foreground">Seu perfil não tem acesso a esta área.</p>
@@ -66,10 +108,21 @@ function AppLayout() {
       </main>
 
       {/* Bottom navigation (mobile) */}
-      <nav aria-label="Navegação principal" className="app-bottomnav fixed inset-x-0 bottom-0 z-20 flex justify-around border-t border-border bg-surface-1/95 pb-4 pt-2 shadow-[0_-6px_18px_-12px_oklch(0.3_0.06_160/0.25)] backdrop-blur md:hidden">
+      <nav
+        aria-label="Navegação principal"
+        className="app-bottomnav fixed inset-x-0 bottom-0 z-20 flex justify-around border-t border-border bg-surface-1/95 pb-4 pt-2 shadow-[0_-6px_18px_-12px_oklch(0.3_0.06_160/0.25)] backdrop-blur md:hidden"
+      >
         {items.map((i) => (
-          <Link key={i.to} to={i.to} aria-current={pathname.startsWith(i.to) ? "page" : undefined} data-active={pathname.startsWith(i.to)} className="nav-pill flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-1 text-xs text-muted-foreground">
-            <span className="nav-indicator grid h-8 w-16 place-items-center rounded-full transition"><Icon name={i.icon} /></span>
+          <Link
+            key={i.to}
+            to={i.to}
+            aria-current={pathname.startsWith(i.to) ? "page" : undefined}
+            data-active={pathname.startsWith(i.to)}
+            className="nav-pill flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-1 text-xs text-muted-foreground"
+          >
+            <span className="nav-indicator grid h-8 w-16 place-items-center rounded-full transition">
+              <Icon name={i.icon} />
+            </span>
             {i.label}
           </Link>
         ))}

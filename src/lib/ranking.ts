@@ -96,7 +96,9 @@ function inScope(
       return !!filter.schoolId && student.schoolId === filter.schoolId;
     case "turma":
       return (
-        !!filter.schoolId && student.schoolId === filter.schoolId && student.classId === filter.classId
+        !!filter.schoolId &&
+        student.schoolId === filter.schoolId &&
+        student.classId === filter.classId
       );
     case "regiao":
       return !!filter.region && school.region === filter.region;
@@ -229,7 +231,12 @@ export function milestonesFor(
       earned: stats.days >= minDays,
     },
     { id: "points", label: "100 pontos", icon: "stars", earned: stats.confirmed >= 100 },
-    { id: "top10", label: "Top 10 da escola", icon: "military_tech", earned: rank !== null && rank <= 10 },
+    {
+      id: "top10",
+      label: "Top 10 da escola",
+      icon: "military_tech",
+      earned: rank !== null && rank <= 10,
+    },
   ];
 }
 

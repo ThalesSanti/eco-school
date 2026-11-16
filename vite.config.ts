@@ -6,7 +6,17 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+// Nitro forwards this Wrangler configuration into the generated Cloudflare Worker config.
+const nitroOptions = {
+  cloudflare: {
+    wrangler: {
+      previews: {},
+    },
+  },
+};
+
 export default defineConfig({
+  nitro: nitroOptions,
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

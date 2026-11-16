@@ -11,8 +11,8 @@
 
 - Use the shared Button component with touch-sized controls for student/teacher actions; this keeps mobile interaction targets consistent.
 - Keep mobile navigation safe-area aware and mission dialogs viewport-height bounded with internal scrolling so forms stay reachable on phones.
-- Mission AI evaluation uses a server function and the AI Gateway Responses SDK; validate inputs/results and keep inference credentials and prompts server-only.
-- AI access requires Cloud authentication and an assigned professor/admin row in user_roles; demo profile selection never grants server privileges.
-- AI assessments are transient advisory results; they never update submission status or points automatically, and mission descriptions are the available evaluation criteria.
+- Teachers review evidence manually in the validation page, approving or rejecting each pending submission.
+- Rejections require a reason; every decision records the validator, timestamp, and audit event.
+- Only approved submissions count toward student points and rankings, as calculated by `computeStudentStats` in `src/lib/ranking.ts`.
 - Student ranking points come only from `computeStudentStats` in `src/lib/ranking.ts`, which reuses `studentPoints` from `src/lib/scoring.ts`; never add a parallel scoring formula. Only approved submissions count, and ranking shows abbreviated names only.
 - Demo students live in `src/lib/demo-data.ts` (deterministic, flagged `demo`); never derive individual points from a school's aggregate total.

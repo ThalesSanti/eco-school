@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { academicBonus, engagementFactor, isWithinWindow, schoolScore, sealFor, studentPoints, validateRule } from "./scoring";
+import {
+  academicBonus,
+  engagementFactor,
+  isWithinWindow,
+  schoolScore,
+  sealFor,
+  studentPoints,
+  validateRule,
+} from "./scoring";
 
 describe("regras de pontuação", () => {
   it("RN01 bloqueia envio após o prazo", () => {
