@@ -34,6 +34,34 @@ O caso de aplicação pública apenas abre a URL publicada para conferir e captu
 
 Se a porta `8787` estiver ocupada por uma instância anterior, inicie o Worker em uma porta livre e defina `PLAYWRIGHT_BASE_URL` com essa mesma URL ao rodar `bun run test:e2e`. Confirme que o endereço responde e que os assets do build carregam antes de interpretar falhas nos fluxos de login.
 
+## Cloudflare Workers Builds
+
+O adaptador Vite encaminha as opções `nitro` para o Nitro. Em `vite.config.ts`, `nitro.cloudflare.wrangler.previews` define o bloco do Wrangler em tempo de build; não edite `.output/server/wrangler.json`, pois ele é gerado. O Nitro gera a configuração de deploy e `.wrangler/deploy/config.json` direciona o Wrangler para esse arquivo.
+
+Após `bun run build`, a configuração gerada deve conter:
+
+```json
+"previews": {}
+```
+
+O bloco vazio é válido para este Worker, que não declara bindings de preview próprios. Se forem necessários recursos ou variáveis exclusivos de Preview, devem ser configurados com valores seguros para Preview; os Previews não herdam as configurações de produção.
+
+No Dashboard, em **Workers & Pages → Eco School → Settings → Builds**, defina:
+
+| Campo | Valor |
+| --- | --- |
+| Production branch | `main` |
+| Build command | `bun run build` |
+| Deploy command | `npx wrangler deploy` |
+| Preview builds | habilitado |
+| Preview command | `npx wrangler preview` |
+
+Com Preview Builds habilitado, pushes para `main` executam o build e o Deploy command. Pushes para `finalizacao-mvp-sem-ia` executam o build e o Preview command; não substituem o Worker publicado em produção. Confira também que a hospedagem de Preview (`workers.dev` ou um domínio de Preview) esteja habilitada para o Worker.
+
+Workers antigos conectados a Builds podem continuar no fluxo legado. Se o Dashboard mostrar **Set up Worker Previews**, o proprietário da conta precisa revisar essa migração antes de iniciá-la: a documentação do Cloudflare informa que essa mudança única não pode ser revertida. Nenhuma configuração remota foi alterada durante esta revisão.
+
+O Wrangler `4.162.0` valida o arquivo gerado com `npx wrangler deploy --dry-run`, sem publicar. O comando `npx wrangler preview` cria ou atualiza uma Preview remota e, portanto, não foi executado nesta revisão.
+
 ## Estrutura SQL de RBAC futuro
 
 `drizzle/migrations/0000_teacher_ai_access.sql` cria o enum `public.app_role` (`professor`, `admin`) e a tabela `public.user_roles`, com referência a `auth.users`, unicidade por usuário/função e Row Level Security. A política permite que uma pessoa autenticada leia apenas as próprias atribuições; a função `service_role` recebe acesso administrativo.
